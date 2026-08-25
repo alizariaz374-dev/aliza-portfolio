@@ -32,9 +32,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 
-
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
