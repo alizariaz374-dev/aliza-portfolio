@@ -33,11 +33,16 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
+
 Route::post('/register', function (Request $request) {
     $validated = $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users',
-        'password' => ['required'],
+        'password' => ['required', 'confirmed', Password::defaults()],
     ]);
 
     $user = User::create([
@@ -46,9 +51,13 @@ Route::post('/register', function (Request $request) {
         'password' => Hash::make($validated['password']),
     ]);
 
+    $token = $user->createToken('auth_token')->plainTextToken;
+
     return response()->json([
         'message' => 'User created successfully',
         'user' => $user,
+        'token' => $token,
+        'token_type' => 'Bearer',
     ], 201);
 });
 
