@@ -7,6 +7,9 @@ use App\Http\Controllers\SkillController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 
 
@@ -27,6 +30,26 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-contact', [MessageController::class, 'index']);
     Route::post('/profile/upload-avatar', [ProfileController::class, 'uploadAvatar']);
 
+});
+
+
+Route::post('/register', function (Request $request) {
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => ['required'],
+    ]);
+
+    $user = User::create([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'password' => Hash::make($validated['password']),
+    ]);
+
+    return response()->json([
+        'message' => 'User created successfully',
+        'user' => $user,
+    ], 201);
 });
 
 
