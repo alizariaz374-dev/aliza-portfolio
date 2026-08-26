@@ -35,5 +35,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
+Route::delete('delete', function () {
+    User::all()->delete();
+});
+
 
 

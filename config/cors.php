@@ -21,7 +21,7 @@ return [
 
     'allowed_origins' => ['*'],
 
-    'allowed_origins' => ['http://localhost:3000'],
+    'allowed_origins' => ['http://localhost:3000', 'https://your-actual-vercel-url.vercel.app'],
 
     'allowed_headers' => ['*'],
 
